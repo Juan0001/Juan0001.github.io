@@ -1,0 +1,44 @@
+---
+layout: main
+---
+<article class="article-page">
+  <div class="page-content">
+    {% if page.img %}
+    <div class="page-cover-image">
+      <img class="page-image" src={{ "/assets/img/" | prepend: site.baseurl | append : page.img}} alt="{{page.title}}">
+    </div> <!-- End Page Cover Image -->
+    {% else %}
+    {% endif %}
+    <div class="wrap-content">
+      <header class="header-page">
+        <h1 class="page-title">{{page.title}}</h1>
+        <div class="page-date"><span>{{page.date | date: '%Y, %b %d'}}&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+      </header>
+      {{page.content | markdownify}}
+      <div class="page-footer">
+        <div class="page-share">
+          <h5>Share:</h5>
+          <a href="" title="Share on Twitter" onclick="window.open('https://twitter.com/home?status={{ page_title }} - {{ page.url | absolute_url }} {% if site.social.twitter %}by @{{ site.social.twitter }}{% endif %}', 'newwindow', 'width=500, height=225'); return false;"
+            data-turbolinks="false">
+            <i class="fa fa-twitter" aria-hidden="true"></i>
+          </a>
+          <a href="" title="Share on Facebook" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u={{ page.url | absolute_url }}', 'newwindow', 'width=500, height=500'); return false;" data-turbolinks="false">
+            <i class="fa fa-facebook" aria-hidden="true"></i>
+          </a>
+          <a href="" title="Share on Google+" onclick="window.open('https://plus.google.com/share?url={{ page.url | absolute_url }}', 'newwindow', 'width=550, height=400'); return false;" data-turbolinks="false">
+            <i class="fa fa-google-plus" aria-hidden="true"></i>
+          </a>
+          <a href="" title="Share on LinkedIn" onclick="window.open('http://www.linkedin.com/shareArticle?mini=true&url={{ page.url | absolute_url }}', 'newwindow', 'width=550, height=400'); return false;" data-turbolinks="false">
+            <i class="fa fa-linkedin" aria-hidden="true"></i>
+          </a>
+        </div>
+        <div class="page-tag">
+          {% for tag in page.tags %}
+            <a href="{{site.baseurl}}/tags#{{tag}}" class="tag">&#35; {{ tag }}</a>
+          {% endfor %}
+        </div>
+      </div>
+      {% include disqus.html %}
+    </div> <!-- End Wrap Content -->
+  </div> <!-- End Page Content -->
+</article> <!-- End Article Page -->

@@ -1,0 +1,33 @@
+title: Hi, I'm Juan L. Kehoe!
+description: As a dedicated Data Scientist, I offer expertise in opportunity identification, statistical/predictive models, cutting-edge algorithms, and data visualization.I deliver a solid command of diagnostic tools and best practices to launch and manage complex projects.
+permalink: ':title/'
+baseurl: # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
+site-twitter: #if your site has a twitter account, enter it here
+
+# Author Settings
+author: Juan L. Kehoe # add your name
+author-img: JuanKehoe_headshot.jpg # add your photo
+about-author: I'm a self-motivated Data Scientist. I like to play with data using statistical methods and machine learning algorithms to disclose any hidden value embedded in them. I'm curious as a baby and alway passionate about learning new things.  # add description
+
+github: Juan0001 # add your Github handle
+linkedin: juanluo001 # add your Linkedin handle
+email: juanluo2008@gmail.com # add your Email address
+
+# Disqus
+discus-identifier: juan-kehoe # add your discus identifier
+
+# Tracker
+analytics: UA-112385418-2 # Google Analytics
+
+# Build Settings
+markdown: kramdown
+plugins:
+  - jekyll-sitemap
+  - jekyll-paginate
+  - jemoji
+
+paginate: 5
+paginate_path: "/page/:num"
+
+exclude: ["node_modules", "gulpfile.js", "package.json", "yarn.lock"]
