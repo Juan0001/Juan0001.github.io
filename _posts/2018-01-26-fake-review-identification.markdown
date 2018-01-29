@@ -4,7 +4,7 @@ title: Project - Fake review identification
 date: 2018-01-26 12:27:20 -0500
 description: The purpose of the project is to identify fake reviews on Yelp using machine learning algorithms.  # Add post description (optional)
 img: feature_importance_transformed.png # Add image post (optional)
-tags: [machine learning, fraud identification]
+tags: [machine learning, fraud identification, natural language processing (NLP), random forest, naive bayes, support vector machine (SVM), decision tree (CART)]
 ---
 
 # Fake review idenfitication
