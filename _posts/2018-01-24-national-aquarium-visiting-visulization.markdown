@@ -9,6 +9,12 @@ tags: [data visulization, R, Shiny] # add tag
 # Crowd Attraction
 - A project for JHU Data Science Hackathon 2015
 
+## Purpose:
+This project is to use data collected from instagram, yelp, flickr and facebook to build an app to predict the crowd in the National Aquarium. Users can use this app to avoid waiting in a long line to get into the aquarium.
+
+- The github link of the project is: <https://github.com/Juan0001/crowdattraction>   
+- The shiny app link of the project is: <https://juanluo.shinyapps.io/National_Aquarium_Crowd/>
+
 ## Team members:
 - "Juan L. Kehoe" juanluo2008@gmail.com
 - "Eugen Tsuprun"
@@ -24,10 +30,3 @@ tags: [data visulization, R, Shiny] # add tag
 - Yelp
 - Flickr
 - Facebook
-
-
-## Purpose:
-This project is to use data collected from instagram, yelp, flickr and facebook to build an app to predict the crowd in the National Aquarium. Users can use this app to avoid waiting in a long line to get into the aquarium.
-
-- The github link of the project is: <https://github.com/Juan0001/crowdattraction>   
-- The shiny app link of the project is: <https://juanluo.shinyapps.io/National_Aquarium_Crowd/>
