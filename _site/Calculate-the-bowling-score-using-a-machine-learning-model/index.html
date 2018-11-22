@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Calculate the bowling score using machine learning models? - Hi, I'm Juan L. Kehoe!</title>
+
+  <!-- Edit site and author settings in `_config.yml` to make the social details your own -->
+
+    <meta content="Hi, I'm Juan L. Kehoe!" property="og:site_name">
+  
+    <meta content="Calculate the bowling score using machine learning models?" property="og:title">
+  
+  
+    <meta content="article" property="og:type">
+  
+  
+    <meta content="As a dedicated Data Scientist, I offer expertise in opportunity identification, statistical/predictive models, cutting-edge algorithms, and data visualization.I deliver a solid command of diagnostic tools and best practices to launch and manage complex projects." property="og:description">
+  
+  
+    <meta content="http://localhost:4000/Calculate-the-bowling-score-using-a-machine-learning-model/" property="og:url">
+  
+  
+    <meta content="2018-11-20T12:27:20-05:00" property="article:published_time">
+    <meta content="http://localhost:4000/about/" property="article:author">
+  
+  
+    <meta content="http://localhost:4000/assets/img/bowling.jpg" property="og:image">
+  
+  
+    
+  
+  
+    
+    <meta content="machine learning model" property="article:tag">
+    
+    <meta content="bowling" property="article:tag">
+    
+    <meta content="python" property="article:tag">
+    
+    <meta content="LSTM" property="article:tag">
+    
+  
+
+  
+    <meta name="twitter:card" content="">
+  
+    <meta name="twitter:site" content="@">
+    <meta name="twitter:creator" content="@KehoeJuan">
+  
+    <meta name="twitter:title" content="Calculate the bowling score using machine learning models?">
+  
+  
+    <meta name="twitter:url" content="http://localhost:4000/Calculate-the-bowling-score-using-a-machine-learning-model/">
+  
+  
+    <meta name="twitter:description" content="As a dedicated Data Scientist, I offer expertise in opportunity identification, statistical/predictive models, cutting-edge algorithms, and data visualization.I deliver a solid command of diagnostic tools and best practices to launch and manage complex projects.">
+  
+  
+    <meta name="twitter:image:src" content="http://localhost:4000/assets/img/bowling.jpg">
+  
+
+	<meta name="description" content="">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta property="og:image" content="">
+	<link rel="shortcut icon" href="/assets/img/data_science.png" type="image/x-icon">
+	<link rel="apple-touch-icon" href="/assets/img/favicon/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicon/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/assets/img/favicon/apple-touch-icon-114x114.png">
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#263959">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#263959">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#263959">
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.min.css">
+	<!-- Styles -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <aside class="sidebar">
+  <header>
+    <div class="about">
+      <div class="cover-author-image">
+        <a href="/"><img src="/assets/img/JuanKehoe_headshot.jpg" alt="Juan L. Kehoe"></a>
+      </div>
+      <div class="author-name">Juan L. Kehoe</div>
+      <p>I'm a self-motivated Data Scientist. I like to play with data using statistical methods and machine learning algorithms to disclose any hidden value embedded in them. I'm curious as a baby and alway passionate about learning new things.</p>
+    </div>
+  </header>
+  <!-- End Header -->
+  <footer>
+    <section class="contact">
+      <h3 class="contact-title">Contact me</h3>
+      <ul>
+        
+        <li class="twitter"><a href="http://twitter.com/KehoeJuan" target="_blank"><i class="fa fa-twitter"></i></a></li>
+        
+
+        
+        <li class="github"><a href="http://github.com/Juan0001" target="_blank"><i class="fa fa-github"></i></a></li>
+        
+
+        
+        <li class="linkedin"><a href="https://in.linkedin.com/in/juanluo001" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        
+
+        
+        <li class="email"><a href="mailto:juanluo2008@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
+        
+      </ul>
+    </section>
+    <!-- End Section Contact -->
+    <div class="copyright">
+      <p>2018 &copy; Juan L. Kehoe</p>
+    </div>
+  </footer>
+  <!-- End Footer -->
+</aside>
+<!-- End Sidebar -->
+<div class="content-box clearfix">
+  <article class="article-page">
+  <div class="page-content">
+    
+    <div class="page-cover-image">
+      <img class="page-image" src=/assets/img/bowling.jpg alt="Calculate the bowling score using machine learning models?">
+    </div> <!-- End Page Cover Image -->
+    
+    <div class="wrap-content">
+      <header class="header-page">
+        <h1 class="page-title">Calculate the bowling score using machine learning models?</h1>
+        <div class="page-date"><span>2018, Nov 20&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+      </header>
+      <h1 id="calculate-the-bowling-score-using-machine-learning-models">Calculate the bowling score using machine learning models?</h1>
+
+<p><span style="color:red"><strong>Can we calculate the bowling score based on a sequence of rolls using a machine learning model?</strong></span></p>
+
+<h2 id="where-is-the-idea-from">Where is the idea from?</h2>
+
+<p>When I was asked to make a program for to calculate the score of a bowling game based on a sequence of rolls, I was not too impressed. I’m Data Scientist, that’s not what I usually work with. I managed to finished the task (detailed solution can be found in <a href="https://github.com/Juan0001/splits-happen/blob/master/bowling_score_calculator.py">here</a>), but felt like I could do more.</p>
+
+<p>Since I never really played a bowling game before, I never know how to calculate the score of a bowling game, I had to read the score logic very clearly before I start coding for it. Then I had this thought, can I use a machine learning model to calculate the bowling score? If I have a bunch of roll sequences and their corresponding score, can I use a machine learning mode to learn the rule by itself? That way I don’t have to struggle to understand every details of the score logic.</p>
+
+<p>This seems a great idea!</p>
+
+<p>I was disappointed not long after I found that there doesn’t seem any data of roll sequences I can use.</p>
+
+<h2 id="where-to-start">Where to start?</h2>
+<p>I decided to make my own data.
+First, I create a <a href="https://github.com/Juan0001/splits-happen/blob/master/bowling_game.py">bowling game</a> program that can play 10 turns;
+Then, I <a href="https://github.com/Juan0001/splits-happen/blob/master/create_bowling_data.py">created</a>  5000 bowling games and calculate their scores and save them to a <a href="https://github.com/Juan0001/splits-happen/blob/master/bowling_data_5000.csv">csv</a> file.</p>
+
+<p>Now I have some data, it’s time to roll.</p>
+
+<h2 id="the-initial-thought">The initial thought:</h2>
+<p>While I think of it, it’s interesting that the process of building a machine learning model is exactly the opposite of programming to calculate the bowling score based on some defined rules. A good machine learning model is supposed to capture the true rules underlying the data.
+Since we all know that the rules for calculating the score of a bowling game have something to do with making decision at some critical point, like a strike or a spare.</p>
+
+<h2 id="the-assumption">The assumption:</h2>
+<p>The assumption for this project is as follows:</p>
+<ul>
+  <li>We have some data with roll sequences and their corresponding score.</li>
+  <li>We know there are some rules you can use to calculate the score, but you don’t want to read the details.</li>
+  <li>We can use a machine learning model to help us learn the rules and calculate the score of a bowling game based on a sequence of rolls for us.</li>
+</ul>
+
+<h2 id="how-to-make-it-happen">How to make it happen?</h2>
+<p>A very import part in building a machine learning model is exploratory data analysis (EDA) and data preprocessing. During this step, we will need to figure out how to represent our data, what feature do we need and how to create the features.</p>
+
+<h3 id="1-eda">1. EDA</h3>
+<p>First let’s read the data and check how does it look like.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># read data</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="n">bowling_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">'bowling_data_5000.csv'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># check the first five rows</span>
+<span class="n">bowling_data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Sequence</th>
+      <th>Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>XX4/X8/2/X7/XX07</td>
+      <td>193</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>X2/XX7/4/3/XXX67</td>
+      <td>213</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3/X3/2/2/8/2/XXX88</td>
+      <td>198</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>X-/5/XX3/6/XXX50</td>
+      <td>204</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>8/9/7/5/1/X3/X1/1/9</td>
+      <td>172</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>We put the bowling game data in a dataframe. As we can see from the upper table, there two columns, the ‘Sequence’ column holds the sequence of rolls for each game, and the ‘Score’ column holds the score for that sequence of rolls. Each row represents one game.</p>
+
+<p>Although the assumption is we don’t know the details of the rules of scoring, we do know that the order of the roll matters and type of roll (strike, spare) matters. So we will take this information into account when we generate our features.</p>
+
+<p>This reminds of a very good way to deal with sequential data which is LSTM(long short - term memory). LSTM is a type of type of Recurrent Neural Network (RNN) and has been used in lots of tech companies including Google, Apple, to solve problems regarding natural languange text compression and unsegmented connected handwriting recognition, etc <a href="https://en.wikipedia.org/wiki/Long_short-term_memory">1</a>.</p>
+
+<h3 id="2-data-preprocessing">2. Data Preprocessing</h3>
+<p>Here I will use keras package in Python to preprocess the data.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># seperate the data into input:X and output:Y</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">bowling_data</span><span class="o">.</span><span class="n">Sequence</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">bowling_data</span><span class="o">.</span><span class="n">Score</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># tokenize the sequence of rolls into single roll and create features</span>
+<span class="kn">import</span> <span class="nn">keras</span>
+<span class="kn">from</span> <span class="nn">keras.preprocessing.text</span> <span class="kn">import</span> <span class="n">Tokenizer</span>
+<span class="kn">from</span> <span class="nn">keras.preprocessing</span> <span class="kn">import</span> <span class="n">sequence</span>
+
+<span class="n">tok</span> <span class="o">=</span> <span class="n">Tokenizer</span><span class="p">(</span><span class="n">char_level</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">tok</span><span class="o">.</span><span class="n">fit_on_texts</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">sequences</span> <span class="o">=</span> <span class="n">tok</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># since LSTM require same input dimension and our roll sequences have differnt length</span>
+<span class="c"># we will need to pad our rolls</span>
+<span class="n">max_len</span> <span class="o">=</span> <span class="mi">21</span> <span class="c"># that's the most rolls a game can have</span>
+<span class="n">sequences_matrix</span> <span class="o">=</span> <span class="n">sequence</span><span class="o">.</span><span class="n">pad_sequences</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span><span class="n">maxlen</span><span class="o">=</span><span class="n">max_len</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s">'post'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># reshape our data to use in the model</span>
+<span class="n">seq_matrix_reshape</span> <span class="o">=</span> <span class="n">sequences_matrix</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">Y_reshape</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="3-train-the-model">3. Train the model</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">keras.layers</span> <span class="kn">import</span> <span class="n">LSTM</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Bidirectional</span><span class="p">,</span> <span class="n">Dense</span>
+<span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
+<span class="c"># set up input dimension</span>
+<span class="n">data_dim</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">timesteps</span> <span class="o">=</span> <span class="mi">22</span>
+<span class="n">num_classes</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c"># initiate the model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Bidirectional</span><span class="p">(</span><span class="n">LSTM</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span><span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="n">timesteps</span><span class="p">,</span> <span class="n">data_dim</span><span class="p">))))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Bidirectional</span><span class="p">(</span><span class="n">LSTM</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="bp">True</span><span class="p">)))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Bidirectional</span><span class="p">(</span><span class="n">LSTM</span><span class="p">(</span><span class="mi">32</span><span class="p">)))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">'linear'</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="nb">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s">'mean_squared_error'</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="s">'adam'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Here I didn’t use a test dataset to test the model performance. Because I know that there is a definite rule behind this set of data that I don’t need to worry about the overfitting issue. If it fits, it finds the rule.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># start training</span>
+<span class="c"># because I don't have a lot of time now, I will just train 10 epochs to have a taste</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">seq_matrix_reshape</span><span class="p">,</span> <span class="n">Y_reshape</span><span class="p">,</span>
+          <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+          <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">seq_matrix_reshape</span><span class="p">,</span> <span class="n">Y_reshape</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Train on 5000 samples, validate on 5000 samples
+Epoch 1/10
+5000/5000 [==============================] - 13s 3ms/step - loss: 36821.3275 - val_loss: 34432.6505
+Epoch 2/10
+5000/5000 [==============================] - 9s 2ms/step - loss: 33347.9910 - val_loss: 32290.7854
+Epoch 3/10
+5000/5000 [==============================] - 9s 2ms/step - loss: 31355.4527 - val_loss: 30401.9174
+Epoch 4/10
+5000/5000 [==============================] - 9s 2ms/step - loss: 29533.5474 - val_loss: 28641.7739
+Epoch 5/10
+5000/5000 [==============================] - 9s 2ms/step - loss: 27821.8807 - val_loss: 26979.5037
+Epoch 6/10
+5000/5000 [==============================] - 10s 2ms/step - loss: 26202.8973 - val_loss: 25402.5721
+Epoch 7/10
+5000/5000 [==============================] - 10s 2ms/step - loss: 24665.2637 - val_loss: 23904.3037
+Epoch 8/10
+5000/5000 [==============================] - 10s 2ms/step - loss: 23201.8754 - val_loss: 22477.1204
+Epoch 9/10
+5000/5000 [==============================] - 9s 2ms/step - loss: 21809.0589 - val_loss: 21118.8180
+Epoch 10/10
+5000/5000 [==============================] - 9s 2ms/step - loss: 20482.7720 - val_loss: 19826.5016
+
+
+
+
+
+&lt;keras.callbacks.History at 0x10f7a4c88&gt;
+</code></pre></div></div>
+
+<h3 id="4-prediction">4. Prediction</h3>
+<p>Now let’s see how good the model has learnt the scoring rules.
+Since we didn’t use too many epochs, we can see that the loss is still very high. The result will be bad, but we might be able to see some trend.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># predict</span>
+<span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">seq_matrix_reshape</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># check the result for the first 10 games</span>
+<span class="n">pred</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>array([[61.28873],
+       [61.28873],
+       [61.28873],
+       [61.28873],
+       [61.28873],
+       [61.28873],
+       [61.28873],
+       [61.28873],
+       [61.28873],
+       [61.28873]], dtype=float32)
+</code></pre></div></div>
+
+<p>The result looks strange, all the predictions are the same. There are lots of reasons for that, I think I will need some time to figure that out.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+<p>In this stage, the model I tried had failed to calculate the score of a bowling game using the sequence of rolls. However, there are lot of things we can do to improve the performance of the model, like change the batch size, add more epoches and so on.
+With more effort, I believe I will be able to train a good model to calculate the bowling game eventually.</p>
+
+<p><strong>NOTE</strong>:
+This is a very preliminary test trial of using machine learning model to calculate the bowling score. I will try to make better features and use other models to finalize my findings in another post. Please let me know if you have any questions or if you spot any mistakes. My email is juanluo2008@gmail.com.</p>
+
+<p>Thank you very much!</p>
+
+<p>Image Refence:
+https://giving.massgeneral.org/events/bowling-for-a-cure/</p>
+
+      <div class="page-footer">
+        <div class="page-share">
+          <h5>Share:</h5>
+          <a href="" title="Share on Twitter" onclick="window.open('https://twitter.com/home?status= - http://localhost:4000/Calculate-the-bowling-score-using-a-machine-learning-model/ ', 'newwindow', 'width=500, height=225'); return false;"
+            data-turbolinks="false">
+            <i class="fa fa-twitter" aria-hidden="true"></i>
+          </a>
+          <a href="" title="Share on Facebook" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/Calculate-the-bowling-score-using-a-machine-learning-model/', 'newwindow', 'width=500, height=500'); return false;" data-turbolinks="false">
+            <i class="fa fa-facebook" aria-hidden="true"></i>
+          </a>
+          <a href="" title="Share on Google+" onclick="window.open('https://plus.google.com/share?url=http://localhost:4000/Calculate-the-bowling-score-using-a-machine-learning-model/', 'newwindow', 'width=550, height=400'); return false;" data-turbolinks="false">
+            <i class="fa fa-google-plus" aria-hidden="true"></i>
+          </a>
+          <a href="" title="Share on LinkedIn" onclick="window.open('http://www.linkedin.com/shareArticle?mini=true&url=http://localhost:4000/Calculate-the-bowling-score-using-a-machine-learning-model/', 'newwindow', 'width=550, height=400'); return false;" data-turbolinks="false">
+            <i class="fa fa-linkedin" aria-hidden="true"></i>
+          </a>
+        </div>
+        <div class="page-tag">
+          
+            <a href="/tags#machine learning model" class="tag">&#35; machine learning model</a>
+          
+            <a href="/tags#bowling" class="tag">&#35; bowling</a>
+          
+            <a href="/tags#python" class="tag">&#35; python</a>
+          
+            <a href="/tags#LSTM" class="tag">&#35; LSTM</a>
+          
+        </div>
+      </div>
+      <section class="comment-area">
+  <div class="comment-wrapper">
+    
+    <div id="disqus_thread" class="article-comments"></div>
+    <script>
+      (function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//juan-kehoe.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+  </div>
+</section> <!-- End Comment Area -->
+
+    </div> <!-- End Wrap Content -->
+  </div> <!-- End Page Content -->
+</article> <!-- End Article Page -->
+
+</div>
+
+  </div>
+  
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-112385418-2', 'auto');
+  ga('send', 'pageview');
+</script> <!-- End Analytics -->
+
+</body>
+</html>
