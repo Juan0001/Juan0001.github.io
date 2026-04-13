@@ -1,0 +1,1299 @@
+---
+layout: null
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Defeat Fan Zhendong - Table Tennis Tactical Simulator</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Inter:wght@300;400;500;700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --red: #c0392b;
+    --red-dark: #96281b;
+    --blue: #2471a3;
+    --blue-dark: #1a5276;
+    --gold: #f39c12;
+    --green: #27ae60;
+    --bg: #0a0a1a;
+    --card: #141428;
+    --card2: #1a1a35;
+    --text: #e8e8f0;
+    --text-dim: #8888aa;
+    --accent: #ff4444;
+  }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ========== LANGUAGE SWITCH ========== */
+  .lang-switch {
+    margin-bottom: 20px;
+  }
+  .lang-switch a {
+    background: var(--card2);
+    border: 2px solid #333355;
+    color: var(--text-dim);
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-family: 'Noto Sans SC', 'Inter', sans-serif;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .lang-switch a:hover {
+    border-color: var(--gold);
+    color: var(--text);
+    background: #222244;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(243,156,18,0.15);
+  }
+
+  /* ========== SCREEN SYSTEM ========== */
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: flex; flex-direction: column; }
+
+  /* ========== TITLE SCREEN ========== */
+  #title-screen {
+    align-items: center; justify-content: center;
+    background: radial-gradient(ellipse at center, #1a1a3a 0%, #0a0a1a 70%);
+    text-align: center; padding: 40px 20px;
+  }
+  #title-screen h1 {
+    font-size: 3.5em; font-weight: 900;
+    background: linear-gradient(135deg, #ff4444, #ff8800, #ffcc00);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 10px; letter-spacing: 2px;
+  }
+  #title-screen .subtitle {
+    font-size: 1.1em; color: var(--text-dim); margin-bottom: 40px;
+    max-width: 600px; line-height: 1.8;
+  }
+  .ping-pong-art {
+    font-size: 80px; margin-bottom: 30px;
+    animation: bounce 2s ease-in-out infinite;
+  }
+  @keyframes bounce {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+  }
+
+  /* ========== SCOUTING SCREEN ========== */
+  #scouting-screen {
+    padding: 30px 20px; align-items: center;
+  }
+  .scouting-content {
+    max-width: 800px; width: 100%;
+  }
+  .scouting-content h2 {
+    font-size: 1.8em; color: var(--gold); margin-bottom: 20px;
+    text-align: center;
+  }
+  .scout-card {
+    background: var(--card); border-radius: 12px; padding: 24px;
+    margin-bottom: 16px; border-left: 4px solid var(--accent);
+  }
+  .scout-card h3 { color: var(--gold); font-size: 1.1em; margin-bottom: 8px; }
+  .scout-card p { color: var(--text-dim); line-height: 1.7; font-size: 0.95em; }
+  .scout-card .tag {
+    display: inline-block; background: rgba(255,68,68,0.15);
+    color: var(--accent); padding: 2px 10px; border-radius: 20px;
+    font-size: 0.8em; margin-right: 6px; margin-top: 8px;
+  }
+  .stat-bar-container { margin-top: 10px; }
+  .stat-bar-label {
+    display: flex; justify-content: space-between;
+    font-size: 0.85em; margin-bottom: 4px;
+  }
+  .stat-bar {
+    height: 8px; background: #222244; border-radius: 4px; overflow: hidden;
+  }
+  .stat-bar-fill {
+    height: 100%; border-radius: 4px;
+    transition: width 1s ease-out;
+  }
+
+  /* ========== MATCH SCREEN ========== */
+  #match-screen { padding: 0; }
+
+  .scoreboard {
+    background: linear-gradient(135deg, #1a1a3a, #0f0f2a);
+    padding: 16px 20px; display: flex; align-items: center;
+    justify-content: center; gap: 20px;
+    border-bottom: 2px solid #333355;
+    flex-wrap: wrap;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .player-score {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .player-name {
+    font-weight: 700; font-size: 1em;
+  }
+  .player-name.you { color: var(--blue); }
+  .player-name.fan { color: var(--accent); }
+  .game-scores {
+    display: flex; gap: 4px; align-items: center;
+  }
+  .game-score-box {
+    width: 28px; height: 28px; display: flex; align-items: center;
+    justify-content: center; border-radius: 4px; font-size: 0.85em;
+    font-weight: 700; background: #222244;
+  }
+  .game-score-box.won-you { background: var(--blue); color: white; }
+  .game-score-box.won-fan { background: var(--accent); color: white; }
+  .game-score-box.current { border: 2px solid var(--gold); }
+  .vs-divider {
+    font-size: 0.8em; color: var(--text-dim); font-weight: 700;
+  }
+  .current-score {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 1.8em; font-weight: 900;
+  }
+  .current-score .you-pts { color: var(--blue); }
+  .current-score .fan-pts { color: var(--accent); }
+  .current-score .colon { color: var(--text-dim); }
+  .set-info {
+    font-size: 0.75em; color: var(--text-dim);
+    text-align: center; margin-top: 4px;
+  }
+
+  /* Momentum indicator */
+  .momentum-display {
+    font-size: 0.8em; color: var(--gold);
+    text-align: center; margin-top: 4px;
+    font-weight: 500;
+  }
+
+  /* Table visualization */
+  .table-area {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 20px; min-height: 400px;
+    background: radial-gradient(ellipse at 50% 60%, #0f1f3a 0%, var(--bg) 70%);
+  }
+
+  .table-visual {
+    width: 320px; height: 200px; position: relative;
+    perspective: 600px; margin-bottom: 24px;
+  }
+  .table-surface {
+    width: 100%; height: 100%;
+    background: linear-gradient(180deg, #1a5c3a 0%, #0d3d25 100%);
+    border: 3px solid #f0f0f0;
+    border-radius: 4px;
+    transform: rotateX(35deg);
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  }
+  .table-net {
+    position: absolute; top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 2px; height: 100%;
+    background: repeating-linear-gradient(
+      to bottom, white 0px, white 3px, transparent 3px, transparent 6px
+    );
+  }
+  .table-line-h {
+    position: absolute; top: 50%; left: 0; right: 0;
+    height: 1px; background: rgba(255,255,255,0.4);
+  }
+  .table-line-v {
+    position: absolute; left: 50%; top: 0; bottom: 0;
+    width: 1px; background: rgba(255,255,255,0.2);
+  }
+  .ball {
+    position: absolute; width: 14px; height: 14px;
+    background: radial-gradient(circle at 30% 30%, #ffcc00, #ff8800);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(255,200,0,0.5);
+    transition: all 0.5s ease;
+    z-index: 10;
+  }
+  .ball-trail {
+    position: absolute; width: 8px; height: 8px;
+    background: rgba(255,200,0,0.2);
+    border-radius: 50%; z-index: 5;
+  }
+
+  /* Situation description */
+  .situation-box {
+    background: var(--card); border-radius: 12px; padding: 20px 24px;
+    max-width: 700px; width: 100%; margin-bottom: 20px;
+    border-left: 4px solid var(--gold);
+  }
+  .situation-phase {
+    font-size: 0.8em; color: var(--gold); font-weight: 700;
+    text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px;
+  }
+  .situation-desc {
+    font-size: 1.05em; line-height: 1.7; color: var(--text);
+  }
+  .situation-detail {
+    font-size: 0.85em; color: var(--text-dim); margin-top: 8px;
+    line-height: 1.6;
+  }
+
+  /* Tactical choices */
+  .choices-area {
+    padding: 16px 20px 30px;
+    background: linear-gradient(0deg, #0f0f25 0%, transparent 100%);
+  }
+  .choices-label {
+    text-align: center; font-size: 0.85em; color: var(--text-dim);
+    margin-bottom: 12px; letter-spacing: 1px;
+  }
+  .choices-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px; max-width: 700px; margin: 0 auto;
+  }
+  .choice-btn {
+    background: var(--card2); border: 2px solid #333355;
+    border-radius: 10px; padding: 14px 16px;
+    cursor: pointer; transition: all 0.2s;
+    text-align: left;
+  }
+  .choice-btn:hover {
+    border-color: var(--gold);
+    background: #222244;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(243,156,18,0.15);
+  }
+  .choice-btn .choice-name {
+    font-weight: 700; font-size: 0.95em; color: var(--text);
+    margin-bottom: 4px;
+  }
+  .choice-btn .choice-desc {
+    font-size: 0.78em; color: var(--text-dim); line-height: 1.4;
+  }
+  .choice-btn .choice-risk {
+    font-size: 0.72em; margin-top: 6px;
+    padding: 2px 8px; border-radius: 10px;
+    display: inline-block;
+  }
+  .risk-low { background: rgba(39,174,96,0.2); color: #27ae60; }
+  .risk-mid { background: rgba(243,156,18,0.2); color: #f39c12; }
+  .risk-high { background: rgba(231,76,60,0.2); color: #e74c3c; }
+
+  /* Point result animation */
+  .point-result {
+    position: fixed; top: 50%; left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    font-size: 2.5em; font-weight: 900;
+    z-index: 200; pointer-events: none;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  .point-result.show { transform: translate(-50%, -50%) scale(1); }
+  .point-result.won { color: #27ae60; }
+  .point-result.lost { color: #e74c3c; }
+
+  /* Momentum message */
+  .momentum-message {
+    position: fixed; top: 20%; left: 50%;
+    transform: translateX(-50%) scale(0);
+    font-size: 1.3em; font-weight: 700;
+    z-index: 180; pointer-events: none;
+    padding: 12px 24px; border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+  .momentum-message.show { transform: translateX(-50%) scale(1); }
+  .momentum-message.positive { background: rgba(39,174,96,0.8); color: #27ae60; }
+  .momentum-message.negative { background: rgba(231,76,60,0.8); color: #e74c3c; }
+
+  /* ========== RESULT SCREEN ========== */
+  #result-screen {
+    align-items: center; justify-content: center;
+    text-align: center; padding: 40px 20px;
+    background: radial-gradient(ellipse at center, #1a1a3a 0%, #0a0a1a 70%);
+  }
+  #result-screen h1 {
+    font-size: 2.8em; font-weight: 900; margin-bottom: 10px;
+  }
+  #result-screen .result-sub {
+    font-size: 1.1em; color: var(--text-dim); margin-bottom: 30px;
+    max-width: 600px; line-height: 1.7;
+  }
+  .final-score-display {
+    display: flex; gap: 8px; justify-content: center;
+    margin-bottom: 30px; flex-wrap: wrap;
+  }
+  .final-game-score {
+    background: var(--card); padding: 10px 16px; border-radius: 8px;
+    min-width: 80px;
+  }
+  .final-game-score .g-label {
+    font-size: 0.7em; color: var(--text-dim); margin-bottom: 4px;
+  }
+  .final-game-score .g-score {
+    font-size: 1.2em; font-weight: 700;
+  }
+
+  .stats-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px; max-width: 500px; margin: 0 auto 30px;
+  }
+  .stat-item {
+    background: var(--card); border-radius: 8px; padding: 16px;
+  }
+  .stat-item .stat-val {
+    font-size: 1.6em; font-weight: 900; color: var(--gold);
+  }
+  .stat-item .stat-label {
+    font-size: 0.75em; color: var(--text-dim); margin-top: 4px;
+  }
+
+  .analysis-box {
+    background: var(--card); border-radius: 12px; padding: 24px;
+    max-width: 700px; text-align: left; margin: 0 auto 30px;
+    border-left: 4px solid var(--gold);
+  }
+  .analysis-box h3 { color: var(--gold); margin-bottom: 12px; }
+  .analysis-box p { color: var(--text-dim); line-height: 1.7; font-size: 0.95em; margin-bottom: 8px; }
+
+  /* ========== BUTTONS ========== */
+  .btn {
+    padding: 14px 36px; border: none; border-radius: 8px;
+    font-family: inherit; font-size: 1em; font-weight: 700;
+    cursor: pointer; transition: all 0.2s;
+    display: inline-block; margin: 6px;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), #cc2200);
+    color: white;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255,68,68,0.3);
+  }
+  .btn-secondary {
+    background: var(--card2); color: var(--text);
+    border: 2px solid #444466;
+  }
+  .btn-secondary:hover {
+    border-color: var(--gold);
+    transform: translateY(-2px);
+  }
+
+  .difficulty-select {
+    display: flex; gap: 12px; margin-bottom: 30px; flex-wrap: wrap;
+    justify-content: center;
+  }
+  .diff-btn {
+    padding: 12px 24px; border-radius: 8px; cursor: pointer;
+    border: 2px solid #333355; background: var(--card);
+    color: var(--text); font-family: inherit; transition: all 0.2s;
+    min-width: 120px;
+  }
+  .diff-btn:hover, .diff-btn.selected {
+    border-color: var(--gold); background: #222244;
+  }
+  .diff-btn .diff-name { font-weight: 700; font-size: 0.95em; }
+  .diff-btn .diff-desc { font-size: 0.75em; color: var(--text-dim); margin-top: 4px; }
+
+  /* Commentary log */
+  .commentary {
+    max-width: 700px; width: 100%; margin-top: 12px;
+  }
+  .commentary-entry {
+    font-size: 0.82em; color: var(--text-dim); padding: 4px 0;
+    border-bottom: 1px solid #1a1a35;
+    animation: fadeIn 0.3s;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    #title-screen h1 { font-size: 2.2em; }
+    .choices-grid { grid-template-columns: 1fr; }
+    .current-score { font-size: 1.4em; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== LANGUAGE TOGGLE ===== -->
+<!-- ===== TITLE SCREEN ===== -->
+<div id="title-screen" class="screen active">
+  <div class="lang-switch"><a href="/beat-fan-zhendong/">如果想要中文提示，请点击这里</a></div>
+  <div class="ping-pong-art">🏓</div>
+  <h1>Defeat Fan Zhendong</h1>
+  <p class="subtitle">
+    A table tennis tactical simulator based on real-world strategic analysis.<br>
+    You're a world top-20 player facing peak-form Fan Zhendong in an elimination match.<br>
+    Every point requires tactical decisions—serve placement, receive strategy, rally tactics.<br>
+    Can you defeat him in a best-of-seven match?
+  </p>
+  <div class="difficulty-select">
+    <button class="diff-btn selected" onclick="selectDiff(this, 'normal')">
+      <div class="diff-name">Normal</div>
+      <div class="diff-desc">Fan in normal form</div>
+    </button>
+    <button class="diff-btn" onclick="selectDiff(this, 'hard')">
+      <div class="diff-name">Hard</div>
+      <div class="diff-desc">Fan in peak condition</div>
+    </button>
+    <button class="diff-btn" onclick="selectDiff(this, 'extreme')">
+      <div class="diff-name">Extreme</div>
+      <div class="diff-desc">Fan at his absolute best</div>
+    </button>
+  </div>
+  <button class="btn btn-primary" onclick="startScouting()">Let's Go! ⚡</button>
+</div>
+
+<!-- ===== SCOUTING SCREEN ===== -->
+<div id="scouting-screen" class="screen">
+  <div class="scouting-content">
+    <h2>Scouting Report: Fan Zhendong</h2>
+
+    <div class="scout-card">
+      <h3>Playing Style</h3>
+      <p>Right-handed shakehand grip, two-wing loop-drive with close-to-table power game. Fan is an aggressive attacker who dominates with his backhand and excels in rapid fire exchanges near the table. He rarely plays passively.</p>
+      <span class="tag">Aggressive</span>
+      <span class="tag">Two-Wing Attack</span>
+      <span class="tag">Backhand Dominant</span>
+    </div>
+
+    <div class="scout-card">
+      <h3>Key Statistics</h3>
+      <p>Backhand flip usage: 34.77% | Scoring rate: 60.50% | Ball speed: up to 19 m/s | Spin: up to 146 RPM</p>
+      <p>These numbers reflect Fan's relentless attacking approach and exceptional consistency at the highest level.</p>
+      <div class="stat-bar-container">
+        <div class="stat-bar-label"><span>Backhand Attack Strength</span><span>95%</span></div>
+        <div class="stat-bar"><div class="stat-bar-fill" style="width:95%; background:#ff4444;"></div></div>
+      </div>
+      <div class="stat-bar-container">
+        <div class="stat-bar-label"><span>Consistency</span><span>92%</span></div>
+        <div class="stat-bar"><div class="stat-bar-fill" style="width:92%; background:#f39c12;"></div></div>
+      </div>
+      <div class="stat-bar-container">
+        <div class="stat-bar-label"><span>Speed & Timing</span><span>90%</span></div>
+        <div class="stat-bar"><div class="stat-bar-fill" style="width:90%; background:#27ae60;"></div></div>
+      </div>
+    </div>
+
+    <div class="scout-card">
+      <h3>Critical Weaknesses</h3>
+      <ul style="color: var(--text-dim); line-height: 1.8; margin-top: 8px;">
+        <li><strong>Middle/Body Transition Zone:</strong> The narrow zone between his backhand and forehand is a strategic vulnerability. He struggles when forced to choose between grips.</li>
+        <li><strong>Predictable Receive Patterns:</strong> His receive strategy follows consistent patterns. Vary your serve placement and rotation to disrupt his rhythm.</li>
+        <li><strong>Forehand Crossover Point:</strong> When forced to transition from backhand to forehand, there's a brief moment of vulnerability in his positioning.</li>
+        <li><strong>Tactical Inflexibility:</strong> While extraordinarily skilled, Fan relies heavily on power and aggression. Rhythm variation and extended rallies can frustrate him.</li>
+      </ul>
+    </div>
+
+    <div class="scout-card">
+      <h3>Tactical Plan</h3>
+      <p><strong>Serve Strategy:</strong> Employ reverse pendulum serves with varied rotation to his backhand. Mix in no-spin short serves to the middle and occasional long balls to disrupt his rhythm.</p>
+      <p><strong>Rally Strategy:</strong> Repeatedly target his middle/body transition zone. Vary the pace and spin to prevent him from entering his comfort zone. Avoid backhand-to-backhand exchanges—this is his domain.</p>
+      <p><strong>Key Principles:</strong> Control the tempo, vary your rhythm, keep him guessing about rotation, and exploit the middle constantly. Patience and tactical discipline are your advantages.</p>
+    </div>
+
+    <div style="text-align: center; margin-top: 30px;">
+      <button class="btn btn-primary" onclick="startMatch()">Start Match 🎯</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MATCH SCREEN ===== -->
+<div id="match-screen" class="screen">
+  <div class="scoreboard">
+    <div class="player-score">
+      <span class="player-name you">You</span>
+      <div class="game-scores" id="your-games"></div>
+    </div>
+    <div class="current-score">
+      <span class="you-pts" id="your-pts">0</span>
+      <span class="colon">:</span>
+      <span class="fan-pts" id="fan-pts">0</span>
+    </div>
+    <div class="player-score">
+      <div class="game-scores" id="fan-games"></div>
+      <span class="player-name fan">Fan</span>
+    </div>
+    <div style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); text-align: right;">
+      <div class="set-info" id="set-info"></div>
+      <div class="momentum-display" id="momentum-display" style="display:none;"></div>
+    </div>
+  </div>
+
+  <div class="table-area">
+    <div class="table-visual">
+      <div class="table-surface">
+        <div class="table-net"></div>
+        <div class="table-line-h"></div>
+        <div class="table-line-v"></div>
+        <div class="ball" id="ball"></div>
+      </div>
+    </div>
+
+    <div class="situation-box">
+      <div class="situation-phase" id="phase-label"></div>
+      <div class="situation-desc" id="situation-desc"></div>
+      <div class="situation-detail" id="situation-detail"></div>
+    </div>
+
+    <div class="commentary" id="commentary"></div>
+  </div>
+
+  <div class="choices-area">
+    <div class="choices-label">Choose your tactical response:</div>
+    <div class="choices-grid" id="choices"></div>
+  </div>
+
+  <div id="point-result" class="point-result"></div>
+  <div id="momentum-message" class="momentum-message"></div>
+</div>
+
+<!-- ===== RESULT SCREEN ===== -->
+<div id="result-screen" class="screen">
+  <div id="result-content" style="width: 100%;"></div>
+</div>
+
+<script>
+// ============================================================
+// STATE & CONFIG
+// ============================================================
+
+let difficulty = 'normal';
+let diffMod = { normal: 0.08, hard: 0.15, extreme: 0.25 };
+
+let state = {
+  games: [],
+  currentGame: { you: 0, fan: 0 },
+  gameNum: 1,
+  serving: 'you',
+  pointsPlayed: 0,
+  totalPointsPlayed: 0,
+  yourGamesWon: 0,
+  fanGamesWon: 0,
+  stats: {
+    pointsWon: 0,
+    pointsLost: 0,
+    aces: 0,
+    brilliantChoices: 0,
+    riskyWins: 0,
+    serveWins: 0,
+    receiveWins: 0,
+    rallyWins: 0,
+  },
+  momentum: 0,
+  fanFrustration: 0,
+  commentaryLog: [],
+  lastChoiceName: null,
+  sameChoiceCount: 0,
+};
+
+function selectDiff(el, d) {
+  document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  difficulty = d;
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function startScouting() { showScreen('scouting-screen'); }
+
+function startMatch() {
+  state = {
+    games: [],
+    currentGame: { you: 0, fan: 0 },
+    gameNum: 1,
+    serving: 'you',
+    pointsPlayed: 0,
+    totalPointsPlayed: 0,
+    yourGamesWon: 0,
+    fanGamesWon: 0,
+    stats: { pointsWon:0, pointsLost:0, aces:0, brilliantChoices:0, riskyWins:0, serveWins:0, receiveWins:0, rallyWins:0 },
+    momentum: 0,
+    fanFrustration: 0,
+    commentaryLog: [],
+    lastChoiceName: null,
+    sameChoiceCount: 0,
+  };
+  showScreen('match-screen');
+  updateScoreboard();
+  nextPoint();
+}
+
+// ============================================================
+// SCENARIO GENERATION
+// ============================================================
+
+function isYourServe() {
+  let totalPts = state.currentGame.you + state.currentGame.fan;
+  if (state.currentGame.you >= 10 && state.currentGame.fan >= 10) {
+    return (totalPts % 2 === 0) === (state.serving === 'you');
+  }
+  let serveBlock = Math.floor(totalPts / 2);
+  return (serveBlock % 2 === 0) === (state.serving === 'you');
+}
+
+const SERVE_SCENARIOS = {
+  you: [
+    {
+      phase: 'Your Serve',
+      desc: 'You prepare to serve. Fan crouches slightly, positioning himself on the backhand side, ready to attack with a backhand flip at any moment. You need to choose your serve strategy.',
+      detail: 'Fan\'s primary weapon on receive is the backhand flip (34.77% usage rate), with short backhand pushes as a secondary option. Reverse rotation serves are highly effective at disrupting his timing.',
+      choices: [
+        {
+          name: '🔄 Reverse Spin Short to Forehand',
+          desc: 'Short serve to his forehand corner with reverse spin to disrupt the flip',
+          risk: 'low', riskLabel: 'Safe',
+          winBase: 0.55,
+          commentary: { win: 'Excellent placement! The reverse spin catches Fan\'s timing off—he pushes weakly and you attack immediately!', lose: 'The serve is too long, and Fan flips aggressively, forcing you into a defensive position.' },
+          brilliant: false,
+        },
+        {
+          name: '⚡ Surprise Long Ball to Backhand Baseline',
+          desc: 'Sudden long serve to his backhand baseline to break his rhythm',
+          risk: 'high', riskLabel: 'Risky',
+          winBase: 0.35,
+          commentary: { win: 'Out of nowhere! The long ball catches Fan completely unprepared—his return quality is poor!', lose: 'Fan reads the long serve and attacks ferociously with a backhand loop drive.' },
+          brilliant: true, brilliantBonus: 0.12,
+        },
+        {
+          name: '🎯 Middle Short Ball with Precision',
+          desc: 'Serve to the middle to exploit his backhand-forehand transition gap',
+          risk: 'mid', riskLabel: 'Medium',
+          winBase: 0.50,
+          commentary: { win: 'Direct hit! The serve finds his transition zone—he hesitates momentarily and returns weakly!', lose: 'The middle serve gives Fan good positioning for a quick backhand attack.' },
+          brilliant: false,
+        },
+        {
+          name: '🌀 Topspin-Backspin Mix',
+          desc: 'Serve with deceptive rotation—topspin appearance with backspin underneath',
+          risk: 'mid', riskLabel: 'Medium',
+          winBase: 0.48,
+          commentary: { win: 'Perfect deception! Fan misjudges the spin and his flip goes into the net!', lose: 'Fan\'s experience shows—he reads the spin correctly and attacks decisively.' },
+          brilliant: false,
+        },
+      ]
+    }
+  ],
+  fan: [
+    {
+      phase: 'Fan\'s Serve',
+      desc: 'Fan prepares to serve. He positions himself on the backhand side, right hand ready, ball hidden beneath the table. The spin is impossible to read—he might throw anything at you.',
+      detail: 'Fan favors reverse spin and no-spin serves to various locations: short to forehand, short to backhand, middle short, and occasional long balls to the baseline. He\'s highly variable.',
+      choices: [
+        {
+          name: '🔙 Aggressive Backhand Flip',
+          desc: 'Take the initiative with a quick backhand flip attack',
+          risk: 'mid', riskLabel: 'Medium',
+          winBase: 0.42,
+          commentary: { win: 'Fantastic backhand flip! You catch Fan by surprise—the angle is too sharp and he can\'t cover it!', lose: 'Your flip quality isn\'t high enough; Fan was expecting it and crushes a counter-attack.' },
+          brilliant: false,
+        },
+        {
+          name: '✋ Forehand Push Short',
+          desc: 'Push short to his forehand to control the tempo',
+          risk: 'low', riskLabel: 'Safe',
+          winBase: 0.50,
+          commentary: { win: 'Excellent short push! The contact is so tight Fan can\'t get the angle to attack—he pushes again!', lose: 'The push is slightly long; Fan picks it with a quick topspin flip.' },
+          brilliant: false,
+        },
+        {
+          name: '💥 Backhand Flick Attack',
+          desc: 'Aggressive backhand flick to catch him off balance',
+          risk: 'high', riskLabel: 'Risky',
+          winBase: 0.38,
+          commentary: { win: 'Bold backhand flick! Speed and placement—Fan didn\'t expect such aggression!', lose: 'The flick angle is too predictable; Fan counters with a powerful backhand loop.' },
+          brilliant: true, brilliantBonus: 0.10,
+        },
+        {
+          name: '🔀 Long Ball to Middle',
+          desc: 'Push long to his middle to create transition difficulties',
+          risk: 'mid', riskLabel: 'Medium',
+          winBase: 0.47,
+          commentary: { win: 'Long push to the middle! Fan hesitates between backhand and forehand, and his return quality drops!', lose: 'The long push plays right into Fan\'s forehand attack—he crushes it with a loop drive.' },
+          brilliant: false,
+        },
+      ]
+    }
+  ]
+};
+
+const RALLY_SCENARIOS = [
+  {
+    phase: 'Rally - Backhand Exchange',
+    desc: 'Fan attacks with a quick backhand counterloop to your backhand! The ball is fast and has heavy spin. He\'s already at the table in attacking position, ready to fire again.',
+    detail: 'Fan\'s near-table backhand attack is one of his strongest weapons. Trying to match his power and spin head-on will hurt you. Consider changing the tempo or direction.',
+    choices: [
+      {
+        name: '↗️ Change Direction to Forehand Wing',
+        desc: 'Suddenly angle the ball wide to his forehand to move him laterally',
+        risk: 'mid', riskLabel: 'Medium',
+        winBase: 0.52,
+        commentary: { win: 'Brilliant angle change! Fan has to sprint to cover—his return is weak and you attack!', lose: 'Fan covers the angle with excellent footwork and counters with his own loop drive.' },
+        brilliant: false,
+      },
+      {
+        name: '🛡️ Backhand-to-Backhand Match',
+        desc: 'Stand your ground and match his backhand attack with your own quality backhand',
+        risk: 'high', riskLabel: 'Dangerous',
+        winBase: 0.32,
+        commentary: { win: 'Backhand versus backhand—you finally get the upper hand in this exchange!', lose: 'This is precisely Fan\'s domain. He dominates the near-table backhand rally and overwhelms you.' },
+        brilliant: false,
+      },
+      {
+        name: '🎯 Loop Back to His Middle',
+        desc: 'Return the ball to his middle/transition zone',
+        risk: 'mid', riskLabel: 'Medium',
+        winBase: 0.50,
+        commentary: { win: 'Perfect placement to the middle! Fan\'s transition zone breaks down and his return goes high!', lose: 'Fan anticipates the middle shot and steps in with a powerful forehand loop.' },
+        brilliant: false,
+      },
+      {
+        name: '🔃 Sudden Soft Block Change',
+        desc: 'Break the intensity with a soft blocking shot',
+        risk: 'high', riskLabel: 'Risky',
+        winBase: 0.36,
+        commentary: { win: 'Unexpected softness! Fan completely misjudges the pace and swings at air!', lose: 'The soft block is still within reach; Fan flicks it and continues the attack.' },
+        brilliant: true, brilliantBonus: 0.15,
+      },
+    ]
+  },
+  {
+    phase: 'Rally - Mid-Court Attack',
+    desc: 'Your forehand loop has driven Fan to his backhand corner. He plays a quick backhand counterloop back to your middle. The ball passes the peak of its arc—your opportunity is now!',
+    detail: 'When Fan is pulled wide, his full-court coverage has a brief gap. This is a critical moment to capitalize.',
+    choices: [
+      {
+        name: '💪 Sidestep Forehand Power Loop',
+        desc: 'Quick footwork to sidestep and unleash a powerful forehand loop',
+        risk: 'mid', riskLabel: 'Medium',
+        winBase: 0.48,
+        commentary: { win: 'Explosive forehand loop! Maximum power and spin—Fan can\'t handle it!', lose: 'Your sidestep attack is read and Fan defends solidly, turning defense into counter-attack.' },
+        brilliant: false,
+      },
+      {
+        name: '🔙 Backhand Transition Loop',
+        desc: 'Play a steady backhand loop to his backhand baseline, reset the rally',
+        risk: 'low', riskLabel: 'Safe',
+        winBase: 0.45,
+        commentary: { win: 'Rock-solid backhand loop! The depth is perfect and Fan is locked in baseline play!', lose: 'The transition loop lacks sufficient weight; Fan attacks with his own loop drive.' },
+        brilliant: false,
+      },
+      {
+        name: '⚡ Quick Forehand Push Attack',
+        desc: 'Fast counter-push straight through, attacking his space',
+        risk: 'high', riskLabel: 'Risky',
+        winBase: 0.40,
+        commentary: { win: 'Timing is perfect! Your quick attack passes through before Fan recovers!', lose: 'The timing is off; Fan blocks and you\'re left covering his counter-attack.' },
+        brilliant: true, brilliantBonus: 0.12,
+      },
+      {
+        name: '🎯 Forehand Loop to His Middle',
+        desc: 'Loop to his transition zone to continue the pressure',
+        risk: 'mid', riskLabel: 'Medium',
+        winBase: 0.50,
+        commentary: { win: 'Relentless middle targeting! Fan\'s rhythm breaks and his response is forced!', lose: 'Continuous middle attacks make Fan adjust; he steps in and crushes with his forehand.' },
+        brilliant: false,
+      },
+    ]
+  },
+  {
+    phase: 'Rally - Backhand-to-Backhand Exchange (5th Ball)',
+    desc: 'A rapid backhand-to-backhand rally! Both players are trading quick loops and counterloops near the table. The rally is intensifying. You need to disrupt this exchange or face disaster.',
+    detail: 'Extended backhand-to-backhand rallies are Fan\'s absolute comfort zone. Stay in this mode too long and you\'ll lose the physical battle.',
+    choices: [
+      {
+        name: '🔥 High-Quality Backhand Loop Counter',
+        desc: 'Respond with your own quality backhand loop—match his intensity',
+        risk: 'mid', riskLabel: 'Medium',
+        winBase: 0.46,
+        commentary: { win: 'Incredible backhand loop! Your spin and power finally exceed Fan\'s expectations!', lose: 'Mid-court backhand rallies are Fan\'s specialty; he dominates the quality metric.' },
+        brilliant: false,
+      },
+      {
+        name: '🏃 Step-In Forehand Power Attack',
+        desc: 'Aggressively step forward and switch to a devastating forehand attack',
+        risk: 'high', riskLabel: 'Risky',
+        winBase: 0.38,
+        commentary: { win: 'Audacious step-in attack! Speed and power overwhelm Fan\'s defense!', lose: 'The step-in is slightly mis-timed; your shot goes wide.' },
+        brilliant: true, brilliantBonus: 0.15,
+      },
+      {
+        name: '🔀 Diagonal Forehand Angle Change',
+        desc: 'Switch lines with an angled forehand—escape the backhand trade',
+        risk: 'mid', riskLabel: 'Medium',
+        winBase: 0.50,
+        commentary: { win: 'Perfect angle change! Fan is caught on his backhand side—excellent recovery opportunity!', lose: 'The diagonal angle is predictable; Fan follows and loops even wider.' },
+        brilliant: false,
+      },
+      {
+        name: '🛡️ Short Block Tempo Shift',
+        desc: 'Break the rally with a short blocking shot to completely reset tempo',
+        risk: 'mid', riskLabel: 'Medium',
+        winBase: 0.42,
+        commentary: { win: 'Sudden rhythm change! The short block surprises Fan and his next shot is forced!', lose: 'Short block gives Fan an easy pick—he flicks and attacks immediately.' },
+        brilliant: false,
+      },
+    ]
+  },
+  {
+    phase: 'Rally - Control Point (Winning Opportunity)',
+    desc: 'Multiple rallies have moved Fan to the wide forehand corner. His last shot is a desperation loop to your backhand—quality is lower. This is your chance to finish!',
+    detail: 'You\'ve successfully moved Fan away from center. His position is compromised and his next response will be slow. Capitalize now.',
+    choices: [
+      {
+        name: '⚡ Backhand Counterloop Straight Line',
+        desc: 'Explosive backhand loop down the line to end the point',
+        risk: 'mid', riskLabel: 'Medium',
+        winBase: 0.58,
+        commentary: { win: 'Unstoppable backhand loop! The line is too tight and Fan cannot recover!', lose: 'The line isn\'t tight enough; Fan reaches the corner and defends.' },
+        brilliant: false,
+      },
+      {
+        name: '🎯 Continue Forehand Pressure',
+        desc: 'Keep pressing to his forehand corner—deny his recovery to center',
+        risk: 'low', riskLabel: 'Safe',
+        winBase: 0.55,
+        commentary: { win: 'Continuous forehand pressure! Fan is completely out of position now—you dominate!', lose: 'The pressure ball lacks quality; Fan finds time and counterattacks.' },
+        brilliant: false,
+      },
+      {
+        name: '💥 Forehand Loop to His Middle',
+        desc: 'Finish at his middle transition zone while he\'s recovering',
+        risk: 'mid', riskLabel: 'Medium',
+        winBase: 0.53,
+        commentary: { win: 'Direct middle strike! Fan can\'t adjust fast enough—point over!', lose: 'Fan reads the middle attack and blocks cleanly, turning it into a counter.' },
+        brilliant: false,
+      },
+      {
+        name: '🌀 Surprise Short Ball to Forehand Short',
+        desc: 'While he\'s at the baseline, drop a short ball to his forehand corner',
+        risk: 'high', riskLabel: 'Risky',
+        winBase: 0.42,
+        commentary: { win: 'Audacious drop! The ball barely clears the net—Fan is at the baseline and cannot reach it!', lose: 'The short ball is too high; Fan attacks it before it even lands.' },
+        brilliant: true, brilliantBonus: 0.18,
+      },
+    ]
+  },
+  {
+    phase: 'Rally - Your Backhand Block Forces Fan Wide',
+    desc: 'Your defensive backhand block forces Fan into a wide forehand position. He barely reaches the ball with an emergency backhand loop. The ball is high and you\'re in attacking position. Finish time!',
+    detail: 'Fan\'s desperation backhand from the forehand wing is his weakest position. Attack decisively.',
+    choices: [
+      {
+        name: '🔥 Forehand Loop Attack',
+        desc: 'Attack with a powerful forehand loop to finish the point',
+        risk: 'mid', riskLabel: 'Medium',
+        winBase: 0.56,
+        commentary: { win: 'Devastating forehand loop! From the emergency position, Fan cannot defend!', lose: 'Fan recovers slightly and gets a block back; rally continues.' },
+        brilliant: false,
+      },
+      {
+        name: '🎯 Forehand Finish Down the Line',
+        desc: 'Angle the forehand loop down the line for a winner',
+        risk: 'mid', riskLabel: 'Medium',
+        winBase: 0.54,
+        commentary: { win: 'Perfect line angle! Fan is still on the wrong side of the court!', lose: 'The line angle is too tight and goes marginally out.' },
+        brilliant: false,
+      },
+      {
+        name: '💥 Crosscourt Forehand Angle',
+        desc: 'Hit a sharp crosscourt forehand angle to the opposite corner',
+        risk: 'high', riskLabel: 'Risky',
+        winBase: 0.41,
+        commentary: { win: 'Spectacular angle! The ball passes Fan at impossible width!', lose: 'The crosscourt angle is too ambitious and the ball sails wide.' },
+        brilliant: true, brilliantBonus: 0.14,
+      },
+      {
+        name: '🌀 Short Ball to Force Approach',
+        desc: 'Drop a short ball to his forehand to end with a net play',
+        risk: 'mid', riskLabel: 'Medium',
+        winBase: 0.48,
+        commentary: { win: 'Tactical short ball! Fan rushes the net and fails to reach it!', lose: 'The short ball sits too high; Fan punishes with a topspin loop.' },
+        brilliant: false,
+      },
+    ]
+  },
+  {
+    phase: 'Rally - Fast Backhand-to-Backhand (5th Ball)',
+    desc: 'A lightning-fast backhand-to-backhand rally! Both of you are firing rapid shots near the table. At 40+ mph, these balls are barely clearing the net. One mistake and it\'s over.',
+    detail: 'This is the core of Fan\'s attacking gameplan. Control or escape.',
+    choices: [
+      {
+        name: '🔄 Continue Backhand Rally',
+        desc: 'Keep the backhand duel alive—counter-attack with equal intensity',
+        risk: 'high', riskLabel: 'Risky',
+        winBase: 0.35,
+        commentary: { win: 'You match Fan\'s pace in the backhand rally—incredible moment!', lose: 'This is exactly what Fan excels at. His backhand is superior in this exchange.' },
+        brilliant: false,
+      },
+      {
+        name: '↗️ Change Line to Forehand',
+        desc: 'Abort the backhand duel and switch to your forehand',
+        risk: 'mid', riskLabel: 'Medium',
+        winBase: 0.51,
+        commentary: { win: 'Smart escape! By switching to forehand, you escape his domain!', lose: 'Fan reads the forehand switch and attacks the space you vacated.' },
+        brilliant: false,
+      },
+      {
+        name: '🎯 Loop to Middle Line',
+        desc: 'Fire a backhand loop directly down his middle transition',
+        risk: 'mid', riskLabel: 'Medium',
+        winBase: 0.49,
+        commentary: { win: 'Middle shot breaks the duel rhythm! Fan\'s response is delayed!', lose: 'Fan saw it coming and steps sideways, clearing the middle.' },
+        brilliant: false,
+      },
+      {
+        name: '💥 Drop Shot During Rally',
+        desc: 'Unexpectedly slow the pace with a drop shot during the fast rally',
+        risk: 'high', riskLabel: 'Risky',
+        winBase: 0.33,
+        commentary: { win: 'Brilliant tempo shift! Fan swings hard at nothing!', lose: 'The drop shot is still reachable; Fan flicks aggressively.' },
+        brilliant: true, brilliantBonus: 0.17,
+      },
+    ]
+  },
+];
+
+function getScenario() {
+  let yourServe = isYourServe();
+  if (Math.random() < 0.5) {
+    let pool = yourServe ? SERVE_SCENARIOS.you : SERVE_SCENARIOS.fan;
+    return JSON.parse(JSON.stringify(pool[Math.floor(Math.random() * pool.length)]));
+  } else {
+    let s = JSON.parse(JSON.stringify(RALLY_SCENARIOS[Math.floor(Math.random() * RALLY_SCENARIOS.length)]));
+    return s;
+  }
+}
+
+// ============================================================
+// POINT RESOLUTION
+// ============================================================
+
+function resolveChoice(choice) {
+  let base = choice.winBase;
+
+  // Difficulty modifier
+  base -= diffMod[difficulty];
+
+  // Momentum: each point of momentum = ~3% swing
+  base += state.momentum * 0.03;
+
+  // Fan frustration bonus (when you vary tactics, he gets frustrated)
+  base += state.fanFrustration * 0.01;
+
+  // Brilliant play bonus (if it's a brilliant choice and you've built momentum)
+  if (choice.brilliant && state.momentum > 0) {
+    base += choice.brilliantBonus || 0;
+  }
+
+  // Fan adaptation: same choice 3 times in a row reduces win rate by 15%
+  if (choice.name === state.lastChoiceName) {
+    state.sameChoiceCount++;
+    if (state.sameChoiceCount >= 3) {
+      base -= 0.15;
+      addCommentary('Fan is reading your pattern—adapt your tactics!');
+    }
+  } else {
+    state.sameChoiceCount = 1;
+    state.lastChoiceName = choice.name;
+  }
+
+  // Clamp
+  base = Math.max(0.15, Math.min(0.75, base));
+
+  return Math.random() < base;
+}
+
+// ============================================================
+// UI UPDATES
+// ============================================================
+
+function updateScoreboard() {
+  document.getElementById('your-pts').textContent = state.currentGame.you;
+  document.getElementById('fan-pts').textContent = state.currentGame.fan;
+  document.getElementById('set-info').textContent = `Game ${state.gameNum} (${state.yourGamesWon}-${state.fanGamesWon})`;
+
+  // Game score boxes
+  let yg = '', fg = '';
+  for (let i = 0; i < state.games.length; i++) {
+    let g = state.games[i];
+    let yw = g.you > g.fan;
+    yg += `<div class="game-score-box ${yw?'won-you':'won-fan'}">${g.you}</div>`;
+    fg += `<div class="game-score-box ${yw?'won-fan':'won-you'}">${g.fan}</div>`;
+  }
+  // Current game indicator
+  yg += `<div class="game-score-box current">${state.currentGame.you}</div>`;
+  fg += `<div class="game-score-box current">${state.currentGame.fan}</div>`;
+
+  document.getElementById('your-games').innerHTML = yg;
+  document.getElementById('fan-games').innerHTML = fg;
+
+  // Show momentum if significant
+  let momDisplay = document.getElementById('momentum-display');
+  if (state.momentum !== 0) {
+    momDisplay.style.display = 'block';
+    momDisplay.textContent = (state.momentum > 0 ? '🔥' : '❄️') + ' Momentum: ' + (state.momentum > 0 ? '+' : '') + state.momentum;
+  } else {
+    momDisplay.style.display = 'none';
+  }
+}
+
+function moveBall(region) {
+  let ball = document.getElementById('ball');
+  let positions = {
+    'fh-short': { left: '20%', top: '25%' },
+    'bh-short': { left: '75%', top: '25%' },
+    'mid-short': { left: '48%', top: '25%' },
+    'fh-deep': { left: '15%', top: '70%' },
+    'bh-deep': { left: '80%', top: '70%' },
+    'mid': { left: '48%', top: '50%' },
+    'center': { left: '48%', top: '45%' },
+  };
+  let pos = positions[region] || positions['center'];
+  ball.style.left = pos.left;
+  ball.style.top = pos.top;
+}
+
+function addCommentary(text) {
+  state.commentaryLog.unshift(text);
+  if (state.commentaryLog.length > 5) state.commentaryLog.pop();
+  let el = document.getElementById('commentary');
+  el.innerHTML = state.commentaryLog.map(c => `<div class="commentary-entry">${c}</div>`).join('');
+}
+
+function showPointResult(won) {
+  let el = document.getElementById('point-result');
+  el.textContent = won ? 'Point! ✓' : 'Fault ✗';
+  el.className = 'point-result ' + (won ? 'won' : 'lost');
+  setTimeout(() => el.classList.add('show'), 50);
+  setTimeout(() => {
+    el.classList.remove('show');
+    setTimeout(() => { el.className = 'point-result'; }, 300);
+  }, 1200);
+}
+
+function showMomentumMessage(msg, isPositive) {
+  let el = document.getElementById('momentum-message');
+  el.textContent = msg;
+  el.className = 'momentum-message ' + (isPositive ? 'positive' : 'negative');
+  setTimeout(() => el.classList.add('show'), 50);
+  setTimeout(() => {
+    el.classList.remove('show');
+    setTimeout(() => { el.className = 'momentum-message'; }, 300);
+  }, 1500);
+}
+
+// ============================================================
+// GAME FLOW
+// ============================================================
+
+function nextPoint() {
+  let scenario = getScenario();
+  document.getElementById('phase-label').textContent = scenario.phase;
+  document.getElementById('situation-desc').textContent = scenario.desc;
+  document.getElementById('situation-detail').textContent = scenario.detail;
+
+  moveBall('center');
+
+  let choicesEl = document.getElementById('choices');
+  choicesEl.innerHTML = '';
+
+  scenario.choices.forEach((c, i) => {
+    let riskClass = c.risk === 'low' ? 'risk-low' : c.risk === 'high' ? 'risk-high' : 'risk-mid';
+    let btn = document.createElement('div');
+    btn.className = 'choice-btn';
+    btn.innerHTML = `
+      <div class="choice-name">${c.name}</div>
+      <div class="choice-desc">${c.desc}</div>
+      <span class="choice-risk ${riskClass}">${c.riskLabel}</span>
+    `;
+    btn.onclick = () => executeChoice(c);
+    choicesEl.appendChild(btn);
+  });
+}
+
+function executeChoice(choice) {
+  // Disable choices during resolution
+  document.querySelectorAll('.choice-btn').forEach(b => b.style.pointerEvents = 'none');
+
+  let won = resolveChoice(choice);
+
+  // Move ball based on outcome
+  let ballRegions = ['fh-short','bh-deep','mid','fh-deep','bh-short','mid-short'];
+  moveBall(ballRegions[Math.floor(Math.random()*ballRegions.length)]);
+
+  // Update stats
+  if (won) {
+    state.stats.pointsWon++;
+    state.momentum = Math.min(5, state.momentum + 1);
+    if (choice.brilliant) { state.stats.brilliantChoices++; state.stats.riskyWins++; }
+    if (choice.risk === 'high') state.stats.riskyWins++;
+  } else {
+    state.stats.pointsLost++;
+    state.momentum = Math.max(-5, state.momentum - 1);
+  }
+
+  // Increase frustration when using varied tactics
+  if (choice.risk !== 'low') state.fanFrustration = Math.min(5, state.fanFrustration + 0.3);
+  else state.fanFrustration = Math.max(0, state.fanFrustration - 0.1);
+
+  // Commentary
+  addCommentary(won ? choice.commentary.win : choice.commentary.lose);
+
+  // Momentum messages
+  if (won && state.momentum >= 4) {
+    let messages = ['You\'re on fire!', 'Excellent shot!', 'The momentum is yours!', 'Perfect execution!'];
+    showMomentumMessage(messages[Math.floor(Math.random() * messages.length)], true);
+  } else if (!won && state.momentum <= -3) {
+    let messages = ['Stay calm, reset your tactics.', 'Fan is finding his rhythm.', 'Adjust your strategy now.'];
+    showMomentumMessage(messages[Math.floor(Math.random() * messages.length)], false);
+  } else if (won && state.fanFrustration >= 3) {
+    showMomentumMessage('Fan is getting frustrated!', true);
+  }
+
+  // Show result
+  showPointResult(won);
+
+  // Score
+  setTimeout(() => {
+    if (won) state.currentGame.you++;
+    else state.currentGame.fan++;
+
+    state.totalPointsPlayed++;
+    updateScoreboard();
+
+    // Check game end
+    let y = state.currentGame.you, f = state.currentGame.fan;
+    if ((y >= 11 || f >= 11) && Math.abs(y - f) >= 2) {
+      endGame();
+    } else {
+      setTimeout(nextPoint, 400);
+    }
+  }, 1000);
+}
+
+function endGame() {
+  let yourWin = state.currentGame.you > state.currentGame.fan;
+  state.games.push({ you: state.currentGame.you, fan: state.currentGame.fan });
+
+  if (yourWin) {
+    state.yourGamesWon++;
+    addCommentary(`🎉 You won Game ${state.gameNum}! ${state.currentGame.you}-${state.currentGame.fan}`);
+  } else {
+    state.fanGamesWon++;
+    addCommentary(`Fan takes Game ${state.gameNum} ${state.currentGame.fan}-${state.currentGame.you}`);
+  }
+
+  // Check match end (best of 7)
+  if (state.yourGamesWon >= 4 || state.fanGamesWon >= 4) {
+    setTimeout(endMatch, 1500);
+    return;
+  }
+
+  // Next game
+  state.gameNum++;
+  state.currentGame = { you: 0, fan: 0 };
+  state.serving = state.serving === 'you' ? 'fan' : 'you';
+  state.momentum = Math.round(state.momentum * 0.4);
+  state.sameChoiceCount = 0;
+  state.lastChoiceName = null;
+
+  updateScoreboard();
+  setTimeout(nextPoint, 1200);
+}
+
+function endMatch() {
+  let yourWin = state.yourGamesWon >= 4;
+  showScreen('result-screen');
+
+  let totalPts = state.stats.pointsWon + state.stats.pointsLost;
+  let winRate = totalPts > 0 ? Math.round(state.stats.pointsWon / totalPts * 100) : 0;
+
+  let gameScoresHTML = state.games.map((g, i) => {
+    let won = g.you > g.fan;
+    return `<div class="final-game-score">
+      <div class="g-label">Game ${i+1}</div>
+      <div class="g-score" style="color:${won?'#27ae60':'#e74c3c'}">${g.you}-${g.fan}</div>
+    </div>`;
+  }).join('');
+
+  let resultTitle, resultSub, resultColor, analysisHTML;
+
+  if (yourWin) {
+    resultColor = '#27ae60';
+    resultTitle = '🏆 VICTORY! You defeated Fan Zhendong!';
+    resultSub = `Final score: ${state.yourGamesWon}-${state.fanGamesWon}. Through precise tactical execution and relentless exploitation of his weaknesses, you achieved this remarkable victory!`;
+    analysisHTML = `
+      <h3>🎯 Victory Analysis</h3>
+      <p>You successfully executed the tactical game plan against Fan Zhendong. Key to your victory:</p>
+      <p><strong>Middle/Body Targeting:</strong> You repeatedly exploited Fan's transition zone between backhand and forehand, forcing uncomfortable positioning and errors.</p>
+      <p><strong>Rhythm Variation:</strong> Your alternation between fast attacks and soft blocks prevented Fan from reaching his attacking comfort zone, disrupting his natural rhythm.</p>
+      <p><strong>Serve Placement Diversity:</strong> Varied serve rotation and placement effectively shut down Fan's signature backhand flip receive, limiting his opportunities to initiate attacks.</p>
+      <p>This victory demonstrates that against even world-class opponents, superior tactical awareness combined with disciplined execution can overcome raw skill differences. Your patience and strategic flexibility were decisive.</p>
+    `;
+  } else {
+    resultColor = '#e74c3c';
+    resultTitle = 'Defeat to Fan Zhendong';
+    resultSub = `Final score: ${state.fanGamesWon}-${state.yourGamesWon}. While you didn't prevail, your tactics posed real challenges to a world-class opponent.`;
+    analysisHTML = `
+      <h3>📋 Defeat Analysis & Takeaways</h3>
+      <p>Facing peak-form Fan Zhendong is one of the sport's greatest challenges. Areas for improvement:</p>
+      <p><strong>Critical Point Execution:</strong> On high-pressure points, you sometimes abandoned tactical discipline. In close games, steady strategy often beats risky aggression.</p>
+      <p><strong>Backhand Stability:</strong> Avoid prolonged backhand-to-backhand exchanges with Fan—this is his strongest territory. Always seek to change the pattern earlier.</p>
+      <p><strong>Serve Quality Under Pressure:</strong> Your reverse rotation serves were tactical sound, but execution wavered in critical moments. Consistency is key.</p>
+      <p>Next steps: Increase training volume on middle-zone precision, strengthen your forehand sidestep attacking position, and focus on serve rotation consistency. The tactical framework was solid—execution refinement will close the gap.</p>
+    `;
+  }
+
+  document.getElementById('result-content').innerHTML = `
+    <h1 style="color:${resultColor}">${resultTitle}</h1>
+    <p class="result-sub">${resultSub}</p>
+    <div class="final-score-display">${gameScoresHTML}</div>
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-val">${winRate}%</div>
+        <div class="stat-label">Point Win Rate</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val">${state.stats.pointsWon}</div>
+        <div class="stat-label">Points Won</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val">${totalPts}</div>
+        <div class="stat-label">Total Points</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val">${state.stats.brilliantChoices}</div>
+        <div class="stat-label">Brilliant Plays</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val">${state.stats.riskyWins}</div>
+        <div class="stat-label">Risk Successes</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val">${state.momentum > 0 ? '+' : ''}${state.momentum}</div>
+        <div class="stat-label">Final Momentum</div>
+      </div>
+    </div>
+    <div class="analysis-box">${analysisHTML}</div>
+    <button class="btn btn-primary" onclick="startMatch()">Play Again 🔄</button>
+    <button class="btn btn-secondary" onclick="showScreen('title-screen')">Main Menu</button>
+  `;
+}
+</script>
+</body>
+</html>
